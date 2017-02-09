@@ -6,7 +6,7 @@
 PKG := github.com/drud/golang-build-container
 
 # Docker repo for a push
-# DOCKER_REPO ?= drud/golang-build-container
+DOCKER_REPO ?= drud/golang-build-container
 
 # Upstream repo used in the Dockerfile
 UPSTREAM_REPO ?= golang:1.7.5-alpine3.5
