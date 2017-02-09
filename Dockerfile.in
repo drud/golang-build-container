@@ -1,0 +1,3 @@
+FROM UPSTREAM_REPO
+
+RUN go install github.com/FiloSottile/vendorcheck
