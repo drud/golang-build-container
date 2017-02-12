@@ -11,7 +11,7 @@ SHELL := /bin/bash
 
 GOFILES = $(shell find $(SRC_DIRS) -name "*.go")
 
-BUILD_IMAGE ?= golang:1.7-alpine
+BUILD_IMAGE ?= drud/golang-build-container
 
 BUILD_BASE_DIR ?= $$PWD
 
@@ -31,6 +31,7 @@ linux darwin: $(GOFILES)
 	    -v $$(pwd)/bin/$@:/go/bin/$@                      \
 	    -v $$(pwd)/.go/std/$@:/usr/local/go/pkg/$@_amd64_static  \
 	    -e GOOS=$@	\
+	    -e EXTENDED_CHECKS=$(EXTENDED_CHECKS)    \
 	    -w /go/src/$(PKG)                                                  \
 	    $(BUILD_IMAGE)                                                     \
 	    /bin/sh -c "                                                       \
