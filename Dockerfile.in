@@ -9,3 +9,7 @@ RUN GOPATH=$GOPATH go build -o /usr/local/bin/vendorcheck github.com/FiloSottile
 # Add govendor
 RUN GOPATH=$GOPATH go get github.com/kardianos/govendor
 RUN GOPATH=$GOPATH go build -o /usr/local/bin/govendor github.com/kardianos/govendor
+
+# Add go lint
+RUN GOPATH=$GOPATH go get github.com/golang/lint/golint
+RUN GOPATH=$GOPATH go build -o /usr/local/bin/golint github.com/golang/lint/golint
