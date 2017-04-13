@@ -9,7 +9,7 @@ PKG := github.com/drud/golang-build-container
 DOCKER_REPO ?= drud/golang-build-container
 
 # Upstream repo used in the Dockerfile
-UPSTREAM_REPO ?= golang:1.7.5-alpine3.5
+UPSTREAM_REPO ?= golang:1.8.1-alpine
 
 # Top-level directories to build
 # SRC_DIRS := files drudapi secrets utils
