@@ -1,15 +1,15 @@
 FROM UPSTREAM_REPO
 
+MAINTAINER Randy Fay <rfay@drud.com>
+
 RUN apk update && apk add git bash build-base
 
-# Add vendorcheck for vendoring checks
-RUN GOPATH=$GOPATH go get github.com/FiloSottile/vendorcheck
-RUN GOPATH=$GOPATH go build -o /usr/local/bin/vendorcheck github.com/FiloSottile/vendorcheck
+# discussion of various tools at
+# http://blog.ralch.com/tutorial/golang-tools-inspection/
+# https://dominik.honnef.co/posts/2014/12/go-tools/#goreturns
 
-# Add govendor
-RUN GOPATH=$GOPATH go get github.com/kardianos/govendor
-RUN GOPATH=$GOPATH go build -o /usr/local/bin/govendor github.com/kardianos/govendor
+ENV GOTOOLSTOBUILD github.com/FiloSottile/vendorcheck github.com/kardianos/govendor github.com/golang/lint/golint honnef.co/go/tools/cmd/staticcheck honnef.co/go/tools/cmd/unused github.com/kisielk/errcheck github.com/opennota/check/cmd/varcheck golang.org/x/tools/cmd/goimports github.com/opennota/check/cmd/aligncheck github.com/opennota/check/cmd/structcheck github.com/opennota/check/cmd/varcheck
 
-# Add go lint
-RUN GOPATH=$GOPATH go get github.com/golang/lint/golint
-RUN GOPATH=$GOPATH go build -o /usr/local/bin/golint github.com/golang/lint/golint
+RUN echo "GOTOOLSTOBUILD=$GOTOOLSTOBUILD"
+
+RUN for item in $GOTOOLSTOBUILD; do echo "Adding tool $item" && go get $item && go build -o /usr/local/bin/$(basename $item) $item;  done

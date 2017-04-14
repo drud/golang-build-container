@@ -39,6 +39,11 @@ Using this base will allow you to build with standard targets like build, test, 
 make 
 make linux
 make darwin
+make gofmt 
+make govet
+make govendor
+make golint
+make static (gofmt, govet, golint, govendor)
 make test
 make container
 make push
@@ -47,10 +52,6 @@ make VERSION=0.3.0 push
 make clean
 ```
 
-## Options
-
-The compile/build targets (linux/darwin) by default run "go vet", "go fmt" and "vendorcheck". This behavior can be overridden by setting the EXTENDED_CHECKS environment variable to 'false' or by specifying it on the make command line: `make EXTENDED_CHECKS=false`.
-
 ## Golang compiler component
 
-golang projects are built in a container from drud/golang-build-container (from https://github.com/drud/golang-build-container). They pick up the "latest" tag by default, so that should be updated when we choose to move to a newer golang version.
+golang projects and static analysis functions like gofmt are built in a container from drud/golang-build-container (from https://github.com/drud/golang-build-container). They pick up the "latest" tag by default, so that should be updated when we choose to move to a newer golang version.

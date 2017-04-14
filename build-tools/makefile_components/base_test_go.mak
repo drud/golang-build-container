@@ -4,21 +4,20 @@
 ##### contents into ../Makefile and commenting out the include and adding a
 ##### comment about what you did and why.
 
-test: linux
+TESTOS = $(shell uname -s | tr '[:upper:]' '[:lower:]')
+
+test: build
 	@mkdir -p bin/linux
 	@mkdir -p .go/src/$(PKG) .go/pkg .go/bin .go/std/linux
-	@docker run                                                            \
-	    -t                                                                \
-	    -u root:root                                             \
-		-v $(BUILD_BASE_DIR)/build-tools:/build-tools		\
+	@docker run -t --rm  -u $(shell id -u):$(shell id -g)                 \
 	    -v $$(pwd)/.go:/go                                                 \
 	    -v $$(pwd):/go/src/$(PKG)                                          \
 	    -v $$(pwd)/bin/linux:/go/bin                                     \
 	    -v $$(pwd)/.go/std/linux:/usr/local/go/pkg/linux_amd64_static  \
+	    -e CGO_ENABLED=0	\
 	    -w /go/src/$(PKG)                                                  \
-	    -e GOOS=linux	\
 	    $(BUILD_IMAGE)                                                     \
-	    /bin/sh -c "                                                       \
-	        OS=linux                                                   \
-	        /build-tools/build-scripts/test_go.sh $(SRC_DIRS)                                    \
-	    "
+	    /bin/bash -c '                                                    \
+	        GOOS=`uname -s |  tr "[:upper:]" "[:lower:]"`  &&		\
+	        go test -v -installsuffix static -ldflags "$(LDFLAGS)" $(SRC_AND_UNDER)   \
+	    '
