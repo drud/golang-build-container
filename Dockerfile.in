@@ -8,7 +8,7 @@ RUN apk update && apk add git bash build-base
 # http://blog.ralch.com/tutorial/golang-tools-inspection/
 # https://dominik.honnef.co/posts/2014/12/go-tools/#goreturns
 
-ENV GOTOOLSTOBUILD github.com/FiloSottile/vendorcheck github.com/kardianos/govendor github.com/golang/lint/golint honnef.co/go/tools/cmd/staticcheck honnef.co/go/tools/cmd/unused github.com/kisielk/errcheck github.com/opennota/check/cmd/varcheck golang.org/x/tools/cmd/goimports github.com/opennota/check/cmd/aligncheck github.com/opennota/check/cmd/structcheck github.com/opennota/check/cmd/varcheck
+ENV GOTOOLSTOBUILD github.com/FiloSottile/vendorcheck github.com/kardianos/govendor github.com/golang/lint/golint honnef.co/go/tools/cmd/staticcheck honnef.co/go/tools/cmd/unused github.com/kisielk/errcheck github.com/opennota/check/cmd/varcheck golang.org/x/tools/cmd/goimports github.com/opennota/check/cmd/aligncheck github.com/opennota/check/cmd/structcheck github.com/opennota/check/cmd/varcheck github.com/3rf/codecoroner
 
 RUN echo "GOTOOLSTOBUILD=$GOTOOLSTOBUILD"
 
