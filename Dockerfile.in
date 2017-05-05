@@ -42,4 +42,5 @@ RUN for item in $GOTOOLSTOBUILD; do \
 	echo "Adding tool $item" && \
 	go get $item && \
 	go build -o /usr/local/bin/$(basename $item) $item; \
-done
+	done
+
