@@ -39,3 +39,6 @@ include build-tools/makefile_components/base_container.mak
 include build-tools/makefile_components/base_push.mak
 #include build-tools/makefile_components/base_test_go.mak
 include build-tools/makefile_components/base_test_python.mak
+
+test: container
+	docker run $(DOCKER_REPO):$(VERSION) errcheck
