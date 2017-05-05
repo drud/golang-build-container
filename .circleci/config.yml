@@ -1,0 +1,14 @@
+version: 2
+stages:
+  build:
+    machine: true
+    working_directory: /home/circleci/golang-build-container
+
+    environment:
+      GOPATH: /home/circleci/go
+
+    steps:
+
+      - checkout
+
+      - run: make container && make test

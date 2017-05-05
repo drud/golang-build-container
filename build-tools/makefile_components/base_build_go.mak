@@ -11,7 +11,7 @@ SHELL := /bin/bash
 
 GOFILES = $(shell find $(SRC_DIRS) -name "*.go")
 
-BUILD_IMAGE ?= drud/golang-build-container:0.1.0
+BUILD_IMAGE ?= drud/golang-build-container:v0.3.0
 
 BUILD_BASE_DIR ?= $$PWD
 
@@ -19,9 +19,12 @@ BUILD_BASE_DIR ?= $$PWD
 SRC_AND_UNDER = $(patsubst %,./%/...,$(SRC_DIRS))
 
 
-VERSION_VARIABLES += VERSION
+COMMIT := $(shell git describe --tags --always --dirty)
+BUILDINFO = $(shell echo Built $$(date) $$USER@$$(hostname) $(BUILD_IMAGE) )
 
-VERSION_LDFLAGS := $(foreach v,$(VERSION_VARIABLES),-X $(PKG)/pkg/version.$(v)=$($(v)))
+VERSION_VARIABLES += VERSION COMMIT BUILDINFO
+
+VERSION_LDFLAGS := $(foreach v,$(VERSION_VARIABLES),-X "$(PKG)/pkg/version.$(v)=$($(v))")
 
 LDFLAGS := -extldflags -static $(VERSION_LDFLAGS)
 
@@ -38,12 +41,10 @@ linux darwin: $(GOFILES)
 	    -v $$(pwd)/bin/$@:/go/bin/$@                      \
 	    -v $$(pwd)/.go/std/$@:/usr/local/go/pkg/$@_amd64_static  \
 	    -e CGO_ENABLED=0                  \
+	    -e GOOS=$@						  \
 	    -w /go/src/$(PKG)                 \
 	    $(BUILD_IMAGE)                    \
-	    /bin/sh -c '                      \
-	        GOOS=$@                       \
-	        go install -installsuffix static -ldflags "$(LDFLAGS)" $(SRC_AND_UNDER)  \
-	    '
+        go install -installsuffix static -ldflags ' $(LDFLAGS) ' $(SRC_AND_UNDER)
 	@touch $@
 	@echo $(VERSION) >VERSION.txt
 
@@ -84,6 +85,52 @@ golint:
 		-w /go/src/$(PKG)                                                  \
 		$(BUILD_IMAGE)                                                     \
 		bash -c 'export OUT=$$(golint $(SRC_AND_UNDER)) && if [ -n "$$OUT" ]; then echo "Golint problems discovered: $$OUT"; exit 1; fi'
+
+errcheck:
+	@echo -n "Checking errcheck: "
+	docker run -t --rm -u $(shell id -u):$(shell id -g)                   \
+		-v $$(pwd)/.go:/go                                                 \
+		-v $$(pwd):/go/src/$(PKG)                                          \
+		-w /go/src/$(PKG)                                                  \
+		$(BUILD_IMAGE)                                                     \
+		errcheck $(SRC_AND_UNDER)
+
+staticcheck:
+	@echo -n "Checking staticcheck: "
+	docker run -t --rm -u $(shell id -u):$(shell id -g)                         \
+		-v $$(pwd)/.go:/go                                                 \
+		-v $$(pwd):/go/src/$(PKG)                                          \
+		-w /go/src/$(PKG)                                                  \
+		$(BUILD_IMAGE)                                                     \
+		staticcheck $(SRC_AND_UNDER)
+
+unused:
+	@echo -n "Checking unused variables and functions: "
+	docker run -t --rm -u $(shell id -u):$(shell id -g)                         \
+		-v $$(pwd)/.go:/go                                                 \
+		-v $$(pwd):/go/src/$(PKG)                                          \
+		-w /go/src/$(PKG)                                                  \
+		$(BUILD_IMAGE)                                                     \
+		unused $(SRC_AND_UNDER)
+
+codecoroner:
+	@echo -n "Checking codecoroner for unused functions: "
+	docker run -t --rm -u $(shell id -u):$(shell id -g)                         \
+		-v $$(pwd)/.go:/go                                                 \
+		-v $$(pwd):/go/src/$(PKG)                                          \
+		-w /go/src/$(PKG)                                                  \
+		$(BUILD_IMAGE) \
+		bash -c 'OUT=$$(codecoroner -tests -ignore vendor funcs $(SRC_AND_UNDER)); if [ -n "$$OUT" ]; then echo "$$OUT"; exit 1; fi'                                             \
+
+
+varcheck:
+	@echo -n "Checking unused globals and struct members: "
+	docker run -t --rm -u $(shell id -u):$(shell id -g)                         \
+		-v $$(pwd)/.go:/go                                                 \
+		-v $$(pwd):/go/src/$(PKG)                                          \
+		-w /go/src/$(PKG)                                                  \
+		$(BUILD_IMAGE)                                                     \
+		varcheck $(SRC_AND_UNDER) && structcheck $(SRC_AND_UNDER)
 
 
 version:

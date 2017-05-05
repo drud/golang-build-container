@@ -8,8 +8,39 @@ RUN apk update && apk add git bash build-base
 # http://blog.ralch.com/tutorial/golang-tools-inspection/
 # https://dominik.honnef.co/posts/2014/12/go-tools/#goreturns
 
-ENV GOTOOLSTOBUILD github.com/FiloSottile/vendorcheck github.com/kardianos/govendor github.com/golang/lint/golint honnef.co/go/tools/cmd/staticcheck honnef.co/go/tools/cmd/unused github.com/kisielk/errcheck github.com/opennota/check/cmd/varcheck golang.org/x/tools/cmd/goimports github.com/opennota/check/cmd/aligncheck github.com/opennota/check/cmd/structcheck github.com/opennota/check/cmd/varcheck github.com/3rf/codecoroner
+ENV GOTOOLSTOBUILD \
+        github.com/3rf/codecoroner \
+        github.com/FiloSottile/vendorcheck \
+        github.com/GoASTScanner/gas \
+        github.com/alecthomas/gocyclo \
+        github.com/alecthomas/gometalinter \
+        github.com/client9/misspell \
+        github.com/golang/lint/golint \
+        github.com/gordonklaus/ineffassign \
+        github.com/jgautheron/goconst \
+        github.com/kardianos/govendor \
+        github.com/kisielk/errcheck \
+        github.com/mdempsky/unconvert \
+        github.com/mibk/dupl \
+        github.com/mvdan/interfacer \
+        github.com/mvdan/unparam \
+        github.com/opennota/check/cmd/aligncheck \
+        github.com/opennota/check/cmd/structcheck \
+        github.com/opennota/check/cmd/varcheck \
+        github.com/stretchr/testify \
+        github.com/stripe/safesql \
+        github.com/tsenart/deadcode \
+        github.com/walle/lll \
+        golang.org/x/tools/cmd/goimports \
+        honnef.co/go/tools/cmd/gosimple \
+        honnef.co/go/tools/cmd/staticcheck \
+        honnef.co/go/tools/cmd/unused
 
 RUN echo "GOTOOLSTOBUILD=$GOTOOLSTOBUILD"
 
-RUN for item in $GOTOOLSTOBUILD; do echo "Adding tool $item" && go get $item && go build -o /usr/local/bin/$(basename $item) $item;  done
+RUN for item in $GOTOOLSTOBUILD; do \
+	echo "Adding tool $item" && \
+	go get $item && \
+	go build -o /usr/local/bin/$(basename $item) $item; \
+	done
+
