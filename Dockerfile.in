@@ -40,7 +40,10 @@ RUN echo "GOTOOLSTOBUILD=$GOTOOLSTOBUILD"
 
 RUN for item in $GOTOOLSTOBUILD; do \
 	echo "Adding tool $item" && \
-	go get $item && \
-	go build -o /usr/local/bin/$(basename $item) $item; \
-	done
+	go get -u $item; \
+done
 
+RUN gometalinter --install
+
+# /go/bin will be mounted on top, so get everything into /usr/local/bin
+RUN cp -r /go/bin/* /usr/local/bin
