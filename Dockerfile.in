@@ -1,7 +1,5 @@
 FROM UPSTREAM_REPO
 
-MAINTAINER Randy Fay <rfay@drud.com>
-
 RUN apk update && apk add git bash build-base
 
 # discussion of various tools at
