@@ -20,8 +20,8 @@ ENV GOTOOLSTOBUILD \
         github.com/kisielk/errcheck \
         github.com/mdempsky/unconvert \
         github.com/mibk/dupl \
-        github.com/mvdan/interfacer \
-        github.com/mvdan/unparam \
+        mvdan.cc/interfacer \
+        mvdan.cc/unparam \
         github.com/opennota/check/cmd/aligncheck \
         github.com/opennota/check/cmd/structcheck \
         github.com/opennota/check/cmd/varcheck \
