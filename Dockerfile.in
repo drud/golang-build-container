@@ -17,6 +17,8 @@ ENV GOTOOLSTOBUILD \
         github.com/gordonklaus/ineffassign \
         github.com/jgautheron/goconst \
         github.com/kardianos/govendor \
+        github.com/golang/dep \
+        github.com/Masterminds/glide \
         github.com/kisielk/errcheck \
         github.com/mdempsky/unconvert \
         github.com/mibk/dupl \
