@@ -12,5 +12,9 @@ stages:
 
       - checkout
 
-      - run: cd tests && make test
+      - run: make linux
+
+      - run: make test
+
+      - run: make -s gometalinter
 
