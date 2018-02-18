@@ -47,3 +47,5 @@ RUN gometalinter --install
 
 # /go/bin will be mounted on top, so get everything into /usr/local/bin
 RUN cp -r /go/bin/* /usr/local/bin
+
+ENV GOCACHE /go/.cache
