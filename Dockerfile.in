@@ -1,4 +1,4 @@
-FROM golang:1.9.3-alpine
+FROM golang:1.10.0-alpine
 
 RUN apk update && apk add git bash build-base
 
@@ -47,3 +47,5 @@ RUN gometalinter --install
 
 # /go/bin will be mounted on top, so get everything into /usr/local/bin
 RUN cp -r /go/bin/* /usr/local/bin
+
+ENV GOCACHE /go/.cache
