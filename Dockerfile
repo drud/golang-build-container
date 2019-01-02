@@ -39,8 +39,7 @@ ENV GOTOOLSTOBUILD \
         github.com/walle/lll \
         golang.org/x/tools/cmd/goimports \
         honnef.co/go/tools/cmd/gosimple \
-        honnef.co/go/tools/cmd/staticcheck \
-        honnef.co/go/tools/cmd/unused
+        honnef.co/go/tools/cmd/staticcheck
 
 RUN echo "GOTOOLSTOBUILD=$GOTOOLSTOBUILD"
 
