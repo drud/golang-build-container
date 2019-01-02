@@ -22,9 +22,7 @@ ENV GOTOOLSTOBUILD \
         github.com/golang/lint/golint \
         github.com/gordonklaus/ineffassign \
         github.com/jgautheron/goconst \
-        github.com/kardianos/govendor \
         github.com/golang/dep/cmd/dep \
-        github.com/Masterminds/glide \
         github.com/kisielk/errcheck \
         github.com/mdempsky/unconvert \
         github.com/mibk/dupl \
