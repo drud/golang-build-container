@@ -13,7 +13,6 @@ RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v$G
 # https://dominik.honnef.co/posts/2014/12/go-tools/#goreturns
 
 ENV GOTOOLSTOBUILD \
-        github.com/3rf/codecoroner \
         github.com/FiloSottile/vendorcheck \
         github.com/GoASTScanner/gas \
         github.com/alecthomas/gocyclo \
@@ -36,8 +35,8 @@ ENV GOTOOLSTOBUILD \
         github.com/tsenart/deadcode \
         github.com/walle/lll \
         golang.org/x/tools/cmd/goimports \
-        honnef.co/go/tools/cmd/gosimple \
-        honnef.co/go/tools/cmd/staticcheck
+        honnef.co/go/tools/cmd/staticcheck \
+        github.com/client9/misspell/cmd/misspell
 
 RUN echo "GOTOOLSTOBUILD=$GOTOOLSTOBUILD"
 
@@ -45,8 +44,6 @@ RUN for item in $GOTOOLSTOBUILD; do \
 	echo "Adding tool $item" && \
 	go get -u $item; \
 done
-
-RUN gometalinter --install
 
 # /go/bin will be mounted on top, so get everything into /usr/local/bin
 RUN cp -r /go/bin/* /usr/local/bin
