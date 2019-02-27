@@ -1,6 +1,6 @@
 FROM golang:1.12-alpine
 ENV GOLANGCI_LINT_VERSION v1.15.0
-ENV GOTESTSUM_VERSION 0.3.2
+ENV GOTESTSUM_VERSION 0.3.3
 
 RUN apk update && apk add git bash build-base curl
 
