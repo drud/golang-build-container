@@ -1,4 +1,4 @@
-FROM golang:1.11.4-alpine
+FROM golang:1.12-alpine
 ENV GOLANGCI_LINT_VERSION v1.12.5
 ENV GOTESTSUM_VERSION 0.3.2
 
