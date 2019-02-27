@@ -18,7 +18,7 @@ ENV GOTOOLSTOBUILD \
         github.com/alecthomas/gocyclo \
         github.com/alecthomas/gometalinter \
         github.com/client9/misspell \
-        github.com/golang/lint/golint \
+        golang.org/x/lint/golint \
         github.com/gordonklaus/ineffassign \
         github.com/jgautheron/goconst \
         github.com/golang/dep/cmd/dep \
