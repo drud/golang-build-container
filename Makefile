@@ -38,4 +38,4 @@ include build-tools/makefile_components/base_push.mak
 include build-tools/makefile_components/base_test_python.mak
 
 test: container
-	docker run $(DOCKER_REPO):$(VERSION) errcheck
+	docker run -v  $(PWD)/test:/workdir --workdir=//workdir $(DOCKER_REPO):$(VERSION) errcheck
