@@ -1,4 +1,4 @@
-FROM golang:1.15.2-alpine
+FROM golang:1.15.6-alpine
 ENV GOLANGCI_LINT_VERSION v1.31.0
 ENV GOTESTSUM_VERSION 0.4.2
 ENV PACKR2_VERSION 2.6.0
@@ -41,6 +41,7 @@ ENV GOTOOLSTOBUILD \
         github.com/tsenart/deadcode \
         github.com/walle/lll \
         golang.org/x/tools/cmd/goimports \
+        golang.org/dl/gotip \
         honnef.co/go/tools/cmd/staticcheck \
         github.com/client9/misspell/cmd/misspell
 
@@ -50,6 +51,9 @@ RUN for item in $GOTOOLSTOBUILD; do \
 	echo "Adding tool $item" && \
 	go get -u $item; \
 done
+
+RUN gotip download
+RUN cp -r ~/sdk /sdk
 
 # /go/bin will be mounted on top, so get everything into /usr/local/bin
 RUN cp -r /go/bin/* /usr/local/bin
