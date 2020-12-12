@@ -3,7 +3,10 @@ ENV GOLANGCI_LINT_VERSION v1.31.0
 ENV GOTESTSUM_VERSION 0.4.2
 ENV PACKR2_VERSION 2.6.0
 
-RUN apt-get update && apt-get install -y build-essential git curl nodejs npm python3-pip python3-dev
+# npm install crashes with default buster npm, use current stable instead
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+
+RUN apt-get update && apt-get install -y build-essential git curl nodejs python3-pip python3-dev
 
 RUN npm install -g markdownlint-cli
 RUN pip3 install mkdocs
@@ -27,7 +30,6 @@ ENV GOTOOLSTOBUILD \
         golang.org/x/lint/golint \
         github.com/gordonklaus/ineffassign \
         github.com/jgautheron/goconst \
-        github.com/golang/dep/cmd/dep \
         github.com/kisielk/errcheck \
         github.com/mdempsky/unconvert \
         github.com/mibk/dupl \

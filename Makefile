@@ -25,7 +25,7 @@ images: $(DEFAULT_IMAGES)
 push:
 	set -eu -o pipefail; \
 	for item in $(DEFAULT_IMAGES); do \
-		docker buildx build --push --platform $(BUILD_ARCHS) --label com.ddev.buildhost=${shell hostname} --target=$$item  -t $(DOCKER_ORG)/$$item:$(VERSION) $(DOCKER_ARGS) .; \
+		docker buildx build --push --platform $(BUILD_ARCHS) --label com.ddev.buildhost=${shell hostname}  -t $(DOCKER_ORG)/$$item:$(VERSION) $(DOCKER_ARGS) . ; \
 		echo "pushed $(DOCKER_ORG)/$$item"; \
 	done
 
@@ -33,7 +33,7 @@ test: container
 	docker run -v  $(PWD)/test:/workdir --workdir=//workdir $(DOCKER_REPO):$(VERSION) errcheck
 
 golang-build-container:
-	docker buildx build -o type=docker --label com.ddev.buildhost=${shell hostname} --target=$@  -t $(DOCKER_ORG)/$@:$(VERSION) $(DOCKER_ARGS) .
+	docker buildx build -o type=docker --label com.ddev.buildhost=${shell hostname}  -t $(DOCKER_ORG)/$@:$(VERSION) $(DOCKER_ARGS) .
 
 
 test: images

@@ -9,4 +9,5 @@ jobs:
 
     steps:
       - checkout
+      - run: bash .circleci/linux_docker_buildx_setup.sh
       - run: make container && make test
