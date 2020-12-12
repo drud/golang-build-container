@@ -1,9 +1,9 @@
-FROM golang:1.15.6-alpine
+FROM golang:1.15.6-buster
 ENV GOLANGCI_LINT_VERSION v1.31.0
 ENV GOTESTSUM_VERSION 0.4.2
 ENV PACKR2_VERSION 2.6.0
 
-RUN apk update && apk add alpine-sdk git bash build-base curl nodejs npm py3-pip python3-dev
+RUN apt-get update && apt-get install -y build-essential git curl nodejs npm python3-pip python3-dev
 
 RUN npm install -g markdownlint-cli
 RUN pip3 install mkdocs
