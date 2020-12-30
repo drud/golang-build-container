@@ -29,9 +29,6 @@ push:
 		echo "pushed $(DOCKER_ORG)/$$item"; \
 	done
 
-test: container
-	docker run -v  $(PWD)/test:/workdir --workdir=//workdir $(DOCKER_REPO):$(VERSION) errcheck
-
 golang-build-container:
 	docker buildx build -o type=docker --label com.ddev.buildhost=${shell hostname}  -t $(DOCKER_ORG)/$@:$(VERSION) $(DOCKER_ARGS) .
 
