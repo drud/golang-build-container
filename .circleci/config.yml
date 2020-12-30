@@ -1,7 +1,8 @@
 version: 2
 jobs:
   build:
-    machine: true
+    machine:
+      image: ubuntu-2004:202010-01
     working_directory: /home/circleci/golang-build-container
 
     environment:
@@ -11,4 +12,4 @@ jobs:
       - checkout
       - run: bash .circleci/linux_circle_vm_setup.sh
       - run: bash .circleci/linux_docker_buildx_setup.sh
-      - run: make container && make test
+      - run: make && make test
