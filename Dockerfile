@@ -1,9 +1,13 @@
-FROM golang:1.15.2-alpine
+FROM golang:1.15.6-buster AS golang-base
 ENV GOLANGCI_LINT_VERSION v1.31.0
 ENV GOTESTSUM_VERSION 0.4.2
 ENV PACKR2_VERSION 2.6.0
+ENV GOBETA=go1.16beta1
 
-RUN apk update && apk add alpine-sdk git bash build-base curl nodejs npm py3-pip python3-dev
+# npm install crashes with default buster npm, use current stable instead
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+
+RUN apt-get update && apt-get install -y build-essential git curl nodejs python3-pip python3-dev
 
 RUN npm install -g markdownlint-cli
 RUN pip3 install mkdocs
@@ -27,7 +31,6 @@ ENV GOTOOLSTOBUILD \
         golang.org/x/lint/golint \
         github.com/gordonklaus/ineffassign \
         github.com/jgautheron/goconst \
-        github.com/golang/dep/cmd/dep \
         github.com/kisielk/errcheck \
         github.com/mdempsky/unconvert \
         github.com/mibk/dupl \
@@ -41,6 +44,7 @@ ENV GOTOOLSTOBUILD \
         github.com/tsenart/deadcode \
         github.com/walle/lll \
         golang.org/x/tools/cmd/goimports \
+        golang.org/dl/${GOBETA} \
         honnef.co/go/tools/cmd/staticcheck \
         github.com/client9/misspell/cmd/misspell
 
@@ -51,7 +55,12 @@ RUN for item in $GOTOOLSTOBUILD; do \
 	go get -u $item; \
 done
 
+RUN ${GOBETA} download && ln -s /go/bin/${GOBETA} /go/bin/go1.16 && cp -r ~/sdk /sdk
+
 # /go/bin will be mounted on top, so get everything into /usr/local/bin
 RUN cp -r /go/bin/* /usr/local/bin
 
+FROM scratch
 ENV GOCACHE /go/.cache
+ENV PATH /usr/local/sbin:/usr/local/bin:/usr/local/go/bin:/usr/sbin:/usr/bin:/sbin:/bin
+COPY --from=golang-base / /
