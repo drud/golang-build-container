@@ -1,8 +1,8 @@
-FROM golang:1.15.6-buster AS golang-base
+FROM golang:1.15.7-buster AS golang-base
 ENV GOLANGCI_LINT_VERSION v1.31.0
 ENV GOTESTSUM_VERSION 0.4.2
 ENV PACKR2_VERSION 2.6.0
-ENV GOBETA=go1.16beta1
+ENV GOBETA=go1.16rc1
 
 # npm install crashes with default buster npm, use current stable instead
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
