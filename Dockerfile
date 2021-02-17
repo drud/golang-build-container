@@ -1,8 +1,7 @@
-FROM golang:1.15.7-buster AS golang-base
-ENV GOLANGCI_LINT_VERSION v1.31.0
+FROM golang:1.16.0-buster AS golang-base
+ENV GOLANGCI_LINT_VERSION v1.36.0
 ENV GOTESTSUM_VERSION 0.4.2
 ENV PACKR2_VERSION 2.6.0
-ENV GOBETA=go1.16rc1
 
 # npm install crashes with default buster npm, use current stable instead
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
@@ -44,7 +43,6 @@ ENV GOTOOLSTOBUILD \
         github.com/tsenart/deadcode \
         github.com/walle/lll \
         golang.org/x/tools/cmd/goimports \
-        golang.org/dl/${GOBETA} \
         honnef.co/go/tools/cmd/staticcheck \
         github.com/client9/misspell/cmd/misspell
 
@@ -54,8 +52,6 @@ RUN for item in $GOTOOLSTOBUILD; do \
 	echo "Adding tool $item" && \
 	go get -u $item; \
 done
-
-RUN ${GOBETA} download && ln -s /go/bin/${GOBETA} /go/bin/go1.16 && cp -r ~/sdk /sdk
 
 # /go/bin will be mounted on top, so get everything into /usr/local/bin
 RUN cp -r /go/bin/* /usr/local/bin
