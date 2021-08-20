@@ -1,4 +1,4 @@
-FROM golang:1.16.6-buster AS golang-base
+FROM golang:1.17.0-bullseye AS golang-base
 ENV GOLANGCI_LINT_VERSION v1.41.1
 ENV GOTESTSUM_VERSION 0.4.2
 
