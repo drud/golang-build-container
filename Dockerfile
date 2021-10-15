@@ -1,4 +1,4 @@
-FROM golang:1.17.2-bullseye AS golang-base
+FROM golang:1.17.2-bullseye
 ENV GOLANGCI_LINT_VERSION v1.42.1
 ENV GOTESTSUM_VERSION 1.7.0
 
@@ -17,7 +17,3 @@ RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v$G
 # /go/bin will be mounted on top, so get everything into /usr/local/bin
 RUN cp -r /go/bin/* /usr/local/bin
 
-FROM scratch
-ENV GOCACHE /go/.cache
-ENV PATH /usr/local/sbin:/usr/local/bin:/usr/local/go/bin:/usr/sbin:/usr/bin:/sbin:/bin
-COPY --from=golang-base / /
